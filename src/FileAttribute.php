@@ -53,14 +53,14 @@ class FileAttribute extends Behavior implements IFileAttribute
      *    [
      *      'class' => PngBaseVersion::class,
      *      'name' => 'upload',
-     *      'basePath' => '/community',
-     *      'baseUrl' => Yii::$app->host->storage->url(),
+     *      'basePath' => '/avatars',
+     *      'baseUrl' => 'https://example.com',
      *    ],
      *    [
      *       'class' => PngResizedVersion::class,
      *       'name' => 'sm',
-     *       'basePath' => '/community',
-     *       'baseUrl' => Yii::$app->host->storage->url(),
+     *       'basePath' => '/avatars',
+     *       'baseUrl' => 'https://example.com',
      *       'width' => 32,
      *       'suffix' => '-sm',
      *    ],

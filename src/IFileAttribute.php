@@ -3,11 +3,6 @@ namespace ptheofan\behaviors\file;
 
 use yii\base\Component;
 
-/**
- * Interface IImageAttribute
- *
- * @package common\models
- */
 interface IFileAttribute
 {
     /**

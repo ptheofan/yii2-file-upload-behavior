@@ -3,6 +3,7 @@
     "description": "A highly customisable system to make file-uploads management as trivial as it should be.",
     "type": "yii2-extension",
     "require": {
+        "php": ">=7.4.0",
         "yiisoft/yii2": "^2.0",
         "yiisoft/yii2-imagine": "^2.1"
     },
