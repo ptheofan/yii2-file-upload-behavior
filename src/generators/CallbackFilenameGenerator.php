@@ -1,9 +1,8 @@
 <?php
 namespace ptheofan\behaviors\file\generators;
 
-use common\models\behaviors\file\IFileAttribute;
-use common\models\behaviors\file\IFilenameGenerator;
-use common\models\Community;
+use ptheofan\behaviors\file\IFileAttribute;
+use ptheofan\behaviors\file\IFilenameGenerator;
 
 /**
  * Use a callback function to define the filename.
@@ -17,7 +16,7 @@ use common\models\Community;
  *  'filenameGenerator' => [
  *      'class' => CallbackFilenameGenerator::class,
  *      'withExt' => false,
- *      'callback' => static function(string $file, Community $model, IFileAttribute $attr) {
+ *      'callback' => static function(string $file, ActiveRecordInterface $model, IFileAttribute $attr) {
  *          return sprintf('%s-%s', $model->id, sha1_file($file));
  *      }
  *  ],
@@ -27,7 +26,7 @@ use common\models\Community;
  *  'filenameGenerator' => [
  *      'class' => CallbackFilenameGenerator::class,
  *      'withExt' => true,
- *      'callback' => static function(string $file, Community $model, IFileAttribute $attr) {
+ *      'callback' => static function(string $file, ActiveRecordInterface $model, IFileAttribute $attr) {
  *          return sprintf('%s-%s', $model->id, sha1_file($file));
  *      }
  *  ],

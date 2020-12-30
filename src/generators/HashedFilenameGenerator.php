@@ -1,8 +1,8 @@
 <?php
 namespace ptheofan\behaviors\file\generators;
 
-use common\models\behaviors\file\IFileAttribute;
-use common\models\behaviors\file\IFilenameGenerator;
+use ptheofan\behaviors\file\IFileAttribute;
+use ptheofan\behaviors\file\IFilenameGenerator;
 use RuntimeException;
 
 /**

@@ -1,8 +1,8 @@
 <?php
 namespace ptheofan\behaviors\file\versions;
 
-use common\models\behaviors\file\IFileAttribute;
-use common\models\behaviors\file\IVersion;
+use \ptheofan\behaviors\file\IFileAttribute;
+use \ptheofan\behaviors\file\IVersion;
 use yii\base\BaseObject;
 
 /**

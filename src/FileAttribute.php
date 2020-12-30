@@ -1,9 +1,9 @@
 <?php
 namespace ptheofan\behaviors\file;
 
-use common\components\UploadedFile;
-use common\models\behaviors\file\generators\HashedFilenameGenerator;
-use common\models\behaviors\file\managers\FlySystem;
+use yii\web\UploadedFile;
+use ptheofan\behaviors\file\generators\HashedFilenameGenerator;
+use ptheofan\behaviors\file\managers\FlySystem;
 use RuntimeException;
 use Yii;
 use yii\base\Behavior;
