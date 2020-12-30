@@ -1,3 +1,9 @@
+Documentation is incomplete and will add more info and examples as time allows. Feel free to open an issue if there's something you want to ask or add to the documentation.
+Currently it comes with a facade for the FlySystem only. In due time I will add also a facade for basic local filesystem
+
+The entire system is designed to be very customisable and extensible. There are a couple of points that can be (and will be) improved
+to make it as extensible and customisable as possible whilst keeping it sane.
+
 This is an example of how to configure the behavior and use it to allow users to upload their avatar.
 In this example we want to achieve the following
 
@@ -5,20 +11,23 @@ In this example we want to achieve the following
     1. see `modelVirtualAttribute`
 1. store the filename to the database in the column `avatar_hash`.
     1. see `modelAttribute`
-1. prefix the saved filename with the ID of the record
-    1. as such we configure the behavior to save the image after the model has been inserted `generateAfterInsert => true`
-1. ensure image is in PNG format
-1. keep the original uploaded image
-1. generate 3 different versions (thumbnails)
-    1. sm (width = 64 pixels)
-    1. md (width = 256 pixels)
-    1. lg (width = 512 pixels)
+1. Filename prefixed with row ID, filename the SHA1 of the file and suffix the version
+    1. For this we set the `filenameGenerator` to use the `CallbackFilenameGenerator`
+    1. Configure it to not include the extension (versions will take care of .ext in this case)
+    1. 
+1. Keep the following versions
+    1. Unresized upload in PNG format `PngBaseVersion`. Final name will look something like 512-deadbeef.png
+    1. sm (width = 64 pixels) with suffix `-sm`. Final name will look something like 512-deadbeef-sm.png
+    1. md (width = 256 pixels) with suffix `-md`. Final name will look something like 512-deadbeef-md.png
+    1. lg (width = 512 pixels) with suffix `-lg`. Final name will look something like 512-deadbeef-lg.png
+
 
 When the request arrives simply push the `UploadedFile` instance to the `avatar` model property.
 When you want to retrieve a particular version of the uploaded file simply call
 ```php
 $url = $model->avatar->getVersion('sm')->getUrl();
 ```
+
 
 You can also print the object to get detailed information
 ```php
@@ -43,6 +52,15 @@ public function behaviors(): array
                     }
                 ],
                 'versions' => [
+                    [
+                        // will produce 
+                        'class' => PngBaseVersion::class,
+                        'name' => 'sm',
+                        'basePath' => '/avatars',
+                        'baseUrl' => 'https://cdn.example.com',
+                        'width' => 64,
+                        'suffix' => '-sm',
+                    ],
                     [
                         'class' => PngResizedVersion::class,
                         'name' => 'sm',
