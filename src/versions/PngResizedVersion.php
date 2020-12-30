@@ -2,7 +2,7 @@
 namespace ptheofan\behaviors\file\versions;
 
 use RuntimeException;
-use yii\helpers\ImageHelper;
+use ptheofan\helpers\ImageHelper;
 
 /**
  * Generate a resized PNG image
