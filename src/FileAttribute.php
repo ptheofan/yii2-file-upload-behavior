@@ -353,12 +353,19 @@ class FileAttribute extends Behavior implements IFileAttribute
         if ($name === $this->modelVirtualAttribute) {
             if ($value === null) {
                 $this->upload = null;
-            } elseif ($value instanceof UploadedFile) {
+                return;
+            }
+
+            if ($value instanceof UploadedFile) {
                 $this->upload = new Upload($value);
-            } elseif (is_string($value) && !empty($value)) {
+                return;
+            }
+
+            if (is_string($value) && !empty($value)) {
                 $decoded = base64_decode($value);
                 if ($decoded !== false) {
                     $this->upload = new Upload($decoded);
+                    return;
                 }
             }
 
