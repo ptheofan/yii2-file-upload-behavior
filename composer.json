@@ -4,7 +4,9 @@
     "type": "yii2-extension",
     "require": {
         "php": ">=7.4.0",
-        "yiisoft/yii2": "^2.0"
+        "yiisoft/yii2": "^2.0",
+        "ptheofan/yii2-image-helper": "^1.0",
+        "ptheofan/yii2-file-helper": "^1.0"
     },
     "license": "BSD-3-Clause",
     "authors": [

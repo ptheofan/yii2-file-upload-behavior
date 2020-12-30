@@ -1,7 +1,7 @@
 <?php
 namespace ptheofan\behaviors\file;
 
-use yii\helpers\FileHelper;
+use ptheofan\helpers\FileHelper;
 use yii\web\UploadedFile;
 
 class Upload
