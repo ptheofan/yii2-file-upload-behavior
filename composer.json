@@ -1,0 +1,25 @@
+{
+    "name": "ptheofan/yii2-file-upload-behavior",
+    "description": "A highly customisable system to make file-uploads management as trivial as it should be.",
+    "type": "yii2-extension",
+    "require": {
+        "yiisoft/yii2": "^2.0",
+        "yiisoft/yii2-imagine": "^2.1"
+    },
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "p.t.",
+            "email": "ptheofan@gmail.com"
+        }
+    ],
+    "suggest": {
+        "yiisoft/yii2-imagine": "Required for the built-in image uploads versioning",
+        "creocoder/yii2-flysystem": "Required if you use the build-in FlySystem storage manager fascade"
+    },
+    "autoload": {
+        "psr-4": {
+            "ptheofan\\behaviors\\file": "src"
+        }
+    }
+}
