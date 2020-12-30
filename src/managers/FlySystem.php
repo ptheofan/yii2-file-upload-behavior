@@ -1,7 +1,7 @@
 <?php
 namespace ptheofan\behaviors\file\managers;
 
-use common\models\behaviors\file\IStorageManager;
+use \ptheofan\behaviors\file\IStorageManager;
 use creocoder\flysystem\Filesystem;
 use Yii;
 use yii\base\InvalidValueException;
