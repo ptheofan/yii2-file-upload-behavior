@@ -220,7 +220,8 @@ class FileAttribute extends Behavior implements IFileAttribute
             }
 
             /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            $this->owner->save(false, [$this->modelAttribute]);
+            // Owner is responsible for saving the model
+            // $this->owner->save(false, [$this->modelAttribute]);
         }
     }
 
