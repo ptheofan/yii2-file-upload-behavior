@@ -92,6 +92,7 @@ class FileAttribute extends Behavior implements IFileAttribute
             $insert => 'onModelInsert',
             BaseActiveRecord::EVENT_BEFORE_UPDATE => 'onModelUpdate',
             BaseActiveRecord::EVENT_AFTER_DELETE => 'onModelDelete',
+
         ];
     }
 
@@ -173,6 +174,23 @@ class FileAttribute extends Behavior implements IFileAttribute
     }
 
     /**
+     * This is called to persist the new filename when we have chosen to
+     * create the filename after insert.
+     *
+     * @throws \yii\base\NotSupportedException
+     */
+    public function updateBasenameAfterInsert(): void
+    {
+        if ($this->owner instanceof BaseActiveRecord) {
+            $pk = $this->owner->getPrimaryKey(true);
+            $this->owner::updateAll([$this->modelAttribute => $this->getBasename()], $pk);
+            return;
+        }
+
+        throw new NotSupportedException('No implementation exists for this instance type. Please provide your own.');
+    }
+
+    /**
      * New Record is created, if Upload is attached save it
      *
      * @param Event $event
@@ -186,19 +204,8 @@ class FileAttribute extends Behavior implements IFileAttribute
             }
 
             if ($this->generateAfterInsert) {
-                if (!$this->owner->hasMethod('save')) {
-                    throw new RuntimeException('Owner has no save function');
-                }
-
-                // Disable model update event handler for this save operation
-                $this->owner->off(BaseActiveRecord::EVENT_BEFORE_UPDATE, [$this, 'onModelUpdate']);
-                /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-                $this->owner->save(false, [$this->modelAttribute]);
-                // Re-enable model update event handler
-                $this->owner->on(BaseActiveRecord::EVENT_BEFORE_UPDATE, [$this, 'onModelUpdate']);
+                $this->updateBasenameAfterInsert();
             }
-
-            $event->handled = true;
         }
     }
 
@@ -218,10 +225,6 @@ class FileAttribute extends Behavior implements IFileAttribute
             foreach ($this->getVersions() as $version) {
                 $version->create();
             }
-
-            /** @noinspection PhpPossiblePolymorphicInvocationInspection */
-            // Owner is responsible for saving the model
-            // $this->owner->save(false, [$this->modelAttribute]);
         }
     }
 
