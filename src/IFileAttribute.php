@@ -23,6 +23,11 @@ interface IFileAttribute
     public function getFilenameGenerator(): IFilenameGenerator;
     public function getStorageManager(): IStorageManager;
     public function getVersion(string $version): IVersion;
+
+    /**
+     * @return IVersion[]
+     */
+    public function getVersions(): array;
     public function getUpload(): Upload;
     public function getOwner(): Component;
     public function getFilename(string $version): ?string;

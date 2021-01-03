@@ -5,16 +5,16 @@ use RuntimeException;
 use ptheofan\helpers\ImageHelper;
 
 /**
- * Generate a resized PNG image
+ * Generate a resized JPG image
  */
-class PngResizedVersion extends ImgResizedVersion
+class JpgResizedVersion extends ImgResizedVersion
 {
-    public string $name = 'PNG Resized Version';
+    public string $name = 'JPG Resized Version';
     public ?string $prefix = null;
     public ?string $suffix = null;
     public ?int $width = null;
     public ?int $height = null;
-    public string $format = 'png';
-    public string $ext = 'png';
+    public string $format = 'jpg';
+    public string $ext = 'jpg';
     
 }
