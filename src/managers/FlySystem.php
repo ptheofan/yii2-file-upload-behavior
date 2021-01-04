@@ -5,6 +5,7 @@ use \ptheofan\behaviors\file\IStorageManager;
 use creocoder\flysystem\Filesystem;
 use Yii;
 use yii\base\InvalidValueException;
+use League\Flysystem\FileNotFoundException;
 
 class FlySystem implements IStorageManager
 {
