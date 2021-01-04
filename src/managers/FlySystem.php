@@ -62,7 +62,11 @@ class FlySystem implements IStorageManager
 
     public function deleteFile(string $file): void
     {
-        $this->getFS()->delete($file);
+        try {
+            $this->getFS()->delete($file);
+        } catch (FileNotFoundException $e) {
+            // file not found, ignore
+        }
     }
 
     public function exists(string $file): bool
