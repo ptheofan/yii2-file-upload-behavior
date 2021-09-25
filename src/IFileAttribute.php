@@ -28,7 +28,7 @@ interface IFileAttribute
      * @return IVersion[]
      */
     public function getVersions(): array;
-    public function getUpload(): Upload;
+    public function getUpload(): ?Upload;
     public function getOwner(): Component;
     public function getFilename(string $version): ?string;
     public function getPath(string $version): ?string;

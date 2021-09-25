@@ -56,6 +56,16 @@ class BaseVersion extends BaseObject implements IVersion
         return $basename;
     }
 
+    /**
+     * Retrieve the path from storage to the file. This will not include the base path of the storage manager.
+     * If you are using the LocalFileSystem you will need to prepend the path from there to get the
+     * real path on your local file system.
+     *
+     * For example,
+     * $realPathOnLocalFilesystem = $model->file->storageManager->basePath . $model->file->getStorageLocation('your-version');
+     *
+     * @return string|null
+     */
     public function getStorageLocation(): ?string
     {
         if (!$this->basePath || !$this->getFilename()) {
@@ -67,12 +77,20 @@ class BaseVersion extends BaseObject implements IVersion
 
     public function exists(): bool
     {
-        return $this->fileAttribute->getStorageManager()->exists($this->getStorageLocation());
+        $target = $this->getStorageLocation();
+        if (!$target) {
+            // if storage location is null we don't have any stored image
+            return false;
+        }
+
+        return $this->fileAttribute->getStorageManager()->exists($target());
     }
 
     public function delete(): void
     {
-        $this->fileAttribute->getStorageManager()->deleteFile($this->getStorageLocation());
+        if ($this->exists()) {
+            $this->fileAttribute->getStorageManager()->deleteFile($this->getStorageLocation());
+        }
     }
 
     public function create(): void

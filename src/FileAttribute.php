@@ -67,9 +67,9 @@ class FileAttribute extends Behavior implements IFileAttribute
      * ],
      *
      * @see Yii::createObject()
-     * @var array of Yii::createObject items
+     * @var callable|array of Yii::createObject items (if callable should return an array of versions as described above)
      */
-    public array $versions = [];
+    public $versions = [];
 
 
     private ?IStorageManager $_storageManager = null;
@@ -151,7 +151,14 @@ class FileAttribute extends Behavior implements IFileAttribute
     public function getVersions(): array
     {
         if ($this->_versions === null) {
-            foreach ($this->versions as $version) {
+            $this->_versions = [];
+            if (is_callable($this->versions)) {
+                $versions = call_user_func($this->versions, $this->getOwner());
+            } else {
+                $versions = $this->versions;
+            }
+
+            foreach ($versions as $version) {
                 if (!$version instanceof IVersion) {
                     $version = Yii::createObject($version);
                 }
@@ -168,7 +175,7 @@ class FileAttribute extends Behavior implements IFileAttribute
         return $this->_versions;
     }
 
-    public function getUpload(): Upload
+    public function getUpload(): ?Upload
     {
         return $this->upload;
     }
@@ -366,11 +373,13 @@ class FileAttribute extends Behavior implements IFileAttribute
             }
 
             if (is_string($value) && !empty($value)) {
-                $decoded = base64_decode($value);
+                $decoded = base64_decode($value, true);
                 if ($decoded !== false) {
                     $this->upload = new Upload($decoded);
-                    return;
+                } else {
+                    $this->upload = new Upload($value);
                 }
+                return;
             }
 
             throw new RuntimeException('IFileAttribute upload supports only Multipart Upload or base64 encoded string.');
