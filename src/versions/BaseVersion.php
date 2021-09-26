@@ -3,7 +3,9 @@ namespace ptheofan\behaviors\file\versions;
 
 use \ptheofan\behaviors\file\IFileAttribute;
 use \ptheofan\behaviors\file\IVersion;
+use ptheofan\behaviors\file\managers\LocalFileSystem;
 use yii\base\BaseObject;
+use yii\web\Request;
 
 /**
  * This is basic version implementation. It represents the 'original-upload' unprocessed version
@@ -17,6 +19,21 @@ use yii\base\BaseObject;
 class BaseVersion extends BaseObject implements IVersion
 {
     public string $basePath;
+
+    /**
+     * This will be prefixed to the url of this version.
+     * For example
+     * baseUrl = https://cdn.example.com
+     * baseUrl = https://cdn.example.com/avatars
+     *
+     * if set to null (default) it will automatically get populated with the request host and the storage location path
+     * For example
+     * Say your server is hosted under http://example.com
+     * basePath = '/images'
+     * baseUrl will automatically be set to http://example.com/images
+     *
+     * @var string|null
+     */
     public ?string $baseUrl = null;
     public string $name = 'Base Version';
     protected IFileAttribute $fileAttribute;
@@ -33,11 +50,19 @@ class BaseVersion extends BaseObject implements IVersion
 
     public function getUrl(): ?string
     {
-        if ($this->baseUrl && $this->getFilename()) {
-            return sprintf('%s/%s', $this->baseUrl, $this->getFilename());
+        if (!$this->getFilename()) {
+            return null;
         }
 
-        return null;
+        $baseUrl = $this->baseUrl;
+        if ($baseUrl === null) {
+            $request = \Yii::$app->getRequest();
+            if ($request instanceof Request) {
+                return sprintf('%s%s', $request->hostInfo, $this->getStorageLocation());
+            }
+        }
+
+        return sprintf('%s/%s', rtrim($baseUrl, '/'), $this->getFilename());
     }
 
     public function getPath(): string
@@ -57,7 +82,8 @@ class BaseVersion extends BaseObject implements IVersion
     }
 
     /**
-     * Retrieve the path from storage to the file. This will not include the base path of the storage manager.
+     * Retrieve the path from storage to the file.
+     * This will not include the base path of the storage manager.
      * If you are using the LocalFileSystem you will need to prepend the path from there to get the
      * real path on your local file system.
      *
@@ -73,6 +99,18 @@ class BaseVersion extends BaseObject implements IVersion
         }
 
         return sprintf('%s/%s', $this->basePath, $this->getFilename());
+    }
+
+    public function getLocalFullPath(string $version): ?string
+    {
+        $storageManager = $this->fileAttribute->getStorageManager();
+        if ($storageManager->isRemote()) {
+            throw new \RuntimeException('A remote storage system cannot provide a local fullpath');
+        }
+
+        if ($storageManager instanceof LocalFileSystem) {
+            return sprintf('%s/%s', rtrim($storageManager->basePath), $this->getStorageLocation());
+        }
     }
 
     public function exists(): bool
