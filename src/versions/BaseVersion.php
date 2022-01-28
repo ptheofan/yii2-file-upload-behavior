@@ -105,12 +105,14 @@ class BaseVersion extends BaseObject implements IVersion
     {
         $storageManager = $this->fileAttribute->getStorageManager();
         if ($storageManager->isRemote()) {
-            throw new \RuntimeException('A remote storage system cannot provide a local fullpath');
+            throw new \RuntimeException('A remote storage system cannot provide a local full-path');
         }
 
         if ($storageManager instanceof LocalFileSystem) {
             return sprintf('%s/%s', rtrim($storageManager->basePath), $this->getStorageLocation());
         }
+
+        return null;
     }
 
     public function exists(): bool
@@ -121,7 +123,7 @@ class BaseVersion extends BaseObject implements IVersion
             return false;
         }
 
-        return $this->fileAttribute->getStorageManager()->exists($target());
+        return $this->fileAttribute->getStorageManager()->exists($target);
     }
 
     public function delete(): void
