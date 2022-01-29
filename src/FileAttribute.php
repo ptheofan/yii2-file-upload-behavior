@@ -372,7 +372,12 @@ class FileAttribute extends Behavior implements IFileAttribute
                 return;
             }
 
-            if (is_string($value) && !empty($value)) {
+            if (empty($value)) {
+                $this->upload = null;
+                return;
+            }
+
+            if (is_string($value)) {
                 $decoded = base64_decode($value, true);
                 if ($decoded !== false) {
                     $this->upload = new Upload($decoded);
